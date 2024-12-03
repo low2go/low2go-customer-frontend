@@ -9,7 +9,7 @@ import { Feather } from '@expo/vector-icons'
 import { icon } from '@/constants/icon';
 import Animated, {useSharedValue, withSpring } from "react-native-reanimated"
 import { useAnimatedStyle,  interpolate} from 'react-native-reanimated';
-
+import { Colors } from '@/constants/colors';
 
 const TabBarButton = ({
     onPress,
@@ -70,7 +70,7 @@ const TabBarButton = ({
       >
         <Animated.View style={animatedIconStyle}>
         {icon[routeName]({
-           color: isFocused ? colors.primary : colors.text 
+           color: isFocused ? Colors.secondary : Colors.text 
         })}
         </Animated.View>
         <Animated.Text style={[{ color: isFocused ? colors.primary : colors.text, fontSize: 12}, animatedTextStyle]}>{label}</Animated.Text>

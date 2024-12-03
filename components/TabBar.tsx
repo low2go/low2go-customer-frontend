@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import TabBarButton from './TabBarButton';
 import { useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { Colors } from '@/constants/colors';
 
 export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
   const { colors } = useTheme();
@@ -40,7 +41,7 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
     <View onLayout={onTabbarLayout} style={styles.tabbar}>
         <Animated.View style={[ animatedStyle, {
             position: 'absolute',
-            backgroundColor: 'green',
+            backgroundColor: Colors.primary,
             borderRadius: 30,
             marginHorizontal: 9,
             // height: dimensions.height - 25,
@@ -105,13 +106,13 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
 const styles = StyleSheet.create({
     tabbar:  {
         position: 'absolute',
-        bottom: 50,
+        bottom: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'white',
         marginHorizontal: 60,
-        paddingVertical: 15,
+        paddingVertical: 10,
         borderRadius: 35,
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 10},
