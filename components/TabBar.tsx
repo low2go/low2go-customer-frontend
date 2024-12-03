@@ -1,18 +1,47 @@
-import { View, Platform } from 'react-native';
+import { View, LayoutChangeEvent } from 'react-native';
 import { useLinkBuilder, useTheme } from '@react-navigation/native';
-import { Text, PlatformPressable } from '@react-navigation/elements';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
-import { Feather } from '@expo/vector-icons'
 import TabBarButton from './TabBarButton';
+import { useState } from 'react';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
   const { colors } = useTheme();
   const { buildHref } = useLinkBuilder();
 
+  const [dimensions, setDimensions] = useState({height: 20, width: 100})
+  const buttonWidth = dimensions.width / state.routes.length;
+
+  const onTabbarLayout = (e:LayoutChangeEvent) => {
+    setDimensions({
+        height: e.nativeEvent.layout.height,
+        width: e.nativeEvent.layout.width,
+    })
+  }
+
+  const tabPositionX = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+        transform:[{translateX: tabPositionX.value}]
+    }
+  })
+
+
   return (
-    <View style={styles.tabbar}>
+    <View onLayout={onTabbarLayout} style={styles.tabbar}>
+        <Animated.View style={[ animatedStyle, {
+            position: 'absolute',
+            backgroundColor: 'green',
+            borderRadius: 30,
+            marginHorizontal: 9,
+            // height: dimensions.height - 25,
+            // width: buttonWidth - 20
+            height: 50,
+            width: 50,
+        }]}/>
+
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -25,6 +54,7 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
         const isFocused = state.index === index;
 
         const onPress = () => {
+            tabPositionX.value = withSpring(buttonWidth  * index, {duration: 1500});
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
@@ -50,7 +80,7 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
                 onLongPress={onLongPress}
                 isFocused={isFocused}
                 routeName={route.name}
-                color={isFocused ? colors.primary : colors.text }
+                color={isFocused ? "#fff" : colors.text }
                 label={label}
 
             />
