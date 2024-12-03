@@ -5,26 +5,11 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons'
+import TabBarButton from './TabBarButton';
 
 export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
   const { colors } = useTheme();
   const { buildHref } = useLinkBuilder();
-
-  const icon = {
-    index: (props: any) => (
-      <Feather name="home" size={24} color="#222" {...props} />
-    ),
-    shop: (props: any) => (
-      <Feather name="shopping-bag" size={24} color="#222" {...props}/>
-    ),
-    orders: (props: any) => (
-      <Feather name="calendar" size={24} color="#222" {...props}/>
-    ),
-    profile: (props: any) => (
-      <Feather name="user" size={24} color="#222" {...props}/>
-    )
-  };
-  
 
   return (
     <View style={styles.tabbar}>
@@ -59,23 +44,16 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
         };
 
         return (
-          <PlatformPressable
-            key = {route.name}
-            href={buildHref(route.name, route.params)}
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarButtonTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={styles.tabbarItem}
-          >
-            {icon[route.name]({
-               color: isFocused ? colors.primary : colors.text 
-            })}
-            <Text style={{ color: isFocused ? colors.primary : colors.text }}>
-              {label}
-            </Text>
-          </PlatformPressable>
+            <TabBarButton
+                key={route.name}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                isFocused={isFocused}
+                routeName={route.name}
+                color={isFocused ? colors.primary : colors.text }
+                label={label}
+
+            />
         );
       })}
     </View>
@@ -91,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'white',
-        marginHorizontal: 80,
+        marginHorizontal: 60,
         paddingVertical: 15,
         borderRadius: 35,
         shadowColor: 'black',
@@ -99,13 +77,7 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         shadowOpacity: 0.1,
     },
-    tabbarItem: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 5
 
-    }
 
 })
 
