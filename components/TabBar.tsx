@@ -28,6 +28,13 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
     }
   })
 
+  const springConfig = {
+    damping: 20,
+    stiffness: 100,
+    mass: 1,
+    duration: 1500
+  };
+
 
   return (
     <View onLayout={onTabbarLayout} style={styles.tabbar}>
@@ -54,7 +61,11 @@ export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
         const isFocused = state.index === index;
 
         const onPress = () => {
-            tabPositionX.value = withSpring(buttonWidth  * index, {duration: 1500});
+            tabPositionX.value = withSpring(buttonWidth  * index, {
+                damping: 20,
+                stiffness: 200,
+                mass: 1,
+              });
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,
