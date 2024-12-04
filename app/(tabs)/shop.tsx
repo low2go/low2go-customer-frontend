@@ -1,26 +1,46 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import GridItem from '@/components/List/GridItem';
 import { Colors } from '@/constants/colors';
-
-type Item = {
-  id: string;
-  name: string;
-};
-
-const items: Item[] = Array.from({ length: 20 }, (_, i) => ({
-  id: `${i + 1}`,
-  name: `Item ${i + 1}`,
-}));
+import { ProductContext, ProductContextType } from '@/context/ProductContext';
 
 const ShopScreen = () => {
+  // Access the context
+
+  const { products, loading, error, fetchProducts } = useContext<ProductContextType>(ProductContext);
+
+  useEffect(() => {
+    if (products.length === 0) {
+      fetchProducts();
+    }
+  }, [products, fetchProducts]);
+
+  // Show loading or error states
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>Shop</Text>
+        <Text style={styles.text}>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>Shop</Text>
+        <Text style={styles.text}>Error: {error}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Shop</Text>
       <FlashList
-        data={items}
-        keyExtractor={(item) => item.id}
+        data={products} // Use products from context
+        keyExtractor={(item) => item.productId}
         renderItem={({ item }) => <GridItem name={item.name} />}
         numColumns={2}
         estimatedItemSize={100}
@@ -45,6 +65,11 @@ const styles = StyleSheet.create({
   },
   row: {
     justifyContent: 'space-between',
+  },
+  text: {
+    color: Colors.text,
+    textAlign: 'center',
+    fontSize: 16,
   },
 });
 
