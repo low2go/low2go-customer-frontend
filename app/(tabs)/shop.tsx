@@ -1,9 +1,11 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { Colors } from '@/constants/colors';
 
 export default function ShopScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Shop screen</Text>
+      <Text style={styles.text}>Shop</Text>
     </View>
   );
 }
@@ -11,11 +13,12 @@ export default function ShopScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
-    justifyContent: 'center',
+    backgroundColor: Colors.background,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
-    color: '#fff',
+    color: Colors.text,
+    fontSize: 24,
   },
 });
