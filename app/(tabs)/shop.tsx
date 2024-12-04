@@ -41,7 +41,7 @@ const ShopScreen = () => {
       <FlashList
         data={products} // Use products from context
         keyExtractor={(item) => item.productId}
-        renderItem={({ item }) => <GridItem name={item.name} />}
+        renderItem={({ item }) => <GridItem name={item.name} productId={item.productId}/>}
         numColumns={2}
         estimatedItemSize={100}
         columnWrapperStyle={styles.row}
