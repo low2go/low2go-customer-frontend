@@ -3,13 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '@/constants/colors';
 
 type GridItemProps = {
+  productId: string;
   name: string; 
 };
 
-const GridItem = ({ name }: GridItemProps) => {
+const GridItem = ({ name, productId }: GridItemProps) => {
   return (
     <View style={styles.gridItem}>
       <Text style={styles.itemText}>{name}</Text>
+      <Text style={styles.itemText}>{productId}</Text>
     </View>
   );
 };
