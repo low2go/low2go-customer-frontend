@@ -4,6 +4,7 @@ import React from 'react';
 export default function ShopLayout() {
   return (
     <Stack>
+      <Stack.Screen name="CartScreen"/>
       <Stack.Screen name="index" options={{ title: 'Shop' }} />
       <Stack.Screen name="ItemDetail" options={{ title: 'Item Detail', headerShown: false }} />
 
