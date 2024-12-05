@@ -3,6 +3,9 @@ import React, { createContext, useState, useEffect, ReactNode } from 'react';
 type Product = {
   productId: string;
   name: string;
+  stock: number;
+  price: number;
+  imageUrl: string;
 };
 
 export interface ProductContextType {

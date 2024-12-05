@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import GridItem from '@/components/List/GridItem';
 import { Colors } from '@/constants/colors';
@@ -41,10 +41,16 @@ const ShopScreen = () => {
       <FlashList
         data={products} // Use products from context
         keyExtractor={(item) => item.productId}
-        renderItem={({ item }) => <GridItem name={item.name} productId={item.productId}/>}
+        renderItem={({ item }) => (
+            <GridItem
+              name={item.name}
+              productId={item.productId}
+              stock={item.stock}
+              price={item.price}
+              imageUrl={item.imageUrl}
+            />
+        )}        
         numColumns={2}
-        estimatedItemSize={100}
-        columnWrapperStyle={styles.row}
       />
     </View>
   );
