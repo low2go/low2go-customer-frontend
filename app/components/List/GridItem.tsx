@@ -39,30 +39,34 @@ const GridItem = ({ name, productId, stock, price, imageUrl, navigation }: GridI
 const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
-    margin: 5,
-    backgroundColor: Colors.background,
-    height: 200,
-    borderRadius: 8,
+    margin: 10, // Increased margin for better spacing between items
+    backgroundColor: 'cream',
+    height: 220, // Slightly increased height for better proportions
+    borderRadius: 10, // Smooth corners
     overflow: 'hidden',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
+    justifyContent: 'flex-start', // Ensure content aligns at the top
+    borderWidth: 1, // Border to visually separate items
+    borderColor: '#ddd', // Light gray border
+    shadowColor: '#000', // Shadow for iOS
+    shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 5,
-    elevation: 3, // Shadow for Android
+    shadowRadius: 4,
+    elevation: 5, // Shadow for Android
   },
   image: {
     width: '100%',
-    height: 120,
-    resizeMode: 'cover', // Adjust image sizing to fill container
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+    height: 140, // Increased height for image prominence
+    resizeMode: 'cover',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   textContainer: {
     flex: 1,
     width: '100%',
     padding: 10,
     alignItems: 'flex-start',
+    justifyContent: 'space-between', // Spread out the text evenly
   },
   priceText: {
     fontSize: 18,
@@ -80,5 +84,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
 });
+
 
 export default GridItem;

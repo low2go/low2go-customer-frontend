@@ -38,10 +38,6 @@ const ShopScreen = () => {
 
   const navigation = useNavigation();
 
-  const goToItemDetail = () => {
-    navigation.navigate('ItemDetail')
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Shop</Text>
