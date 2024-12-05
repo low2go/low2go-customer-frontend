@@ -1,16 +1,21 @@
+import { createStackNavigator } from '@react-navigation/stack';
 import { Tabs } from 'expo-router';
 import { TabBar } from '@/app/components/TabBar';
-import CartIcon from '@/app/components/CartIcon'; // Adjust the import path if needed
+import CartIcon from '@/app/components/CartIcon'; // Your cart icon
+import CartScreen from './cart/CartScreen';
 
-export default function TabLayout() {
+
+const Stack = createStackNavigator();
+
+function TabLayout() {
   return (
     <Tabs tabBar={(props) => <TabBar {...props} />}>
       <Tabs.Screen 
         name="index" 
         options={{ 
           title: 'Home', 
-          headerShown: true, // Show header
-          headerRight: () => <CartIcon />, // Add CartIcon in the header
+          headerShown: true,
+          headerRight: () => <CartIcon />, // Add CartIcon to the header
         }} 
       />
       <Tabs.Screen 
@@ -40,3 +45,6 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+
+
+export default TabLayout;
