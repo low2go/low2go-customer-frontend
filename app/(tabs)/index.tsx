@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
-import { Colors } from '@/constants/colors';
+import { Colors } from '@/app/constants/colors';
 
 export default function Index() {
   return (

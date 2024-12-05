@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import TabBarButton from './TabBarButton';
 import { useState } from 'react';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { Colors } from '@/constants/colors';
+import { Colors } from '../constants/colors';
 
 export function TabBar({ state, descriptors, navigation } : BottomTabBarProps) {
   const { colors } = useTheme();
