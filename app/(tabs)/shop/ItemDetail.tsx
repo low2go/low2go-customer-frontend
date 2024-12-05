@@ -1,18 +1,31 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Colors } from '@/app/constants/colors';
 
 const ItemDetailScreen = () => {
   const route = useRoute();
   const { product } = route.params;
 
   return (
-    <View style={styles.container}>
+    
+    <SafeAreaView style={styles.container}>
       {/* Hero Image */}
+
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => product.navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
       <Image source={{ uri: product.imageUrl }} style={styles.image} />
 
       {/* Details Section */}
       <View style={styles.detailsContainer}>
+
+
         <Text style={styles.name}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>
         <Text style={styles.stock}>Stock Available: {product.stock}</Text>
@@ -20,15 +33,13 @@ const ItemDetailScreen = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut urna
           vel lacus fermentum volutpat. {/* Placeholder description */}
         </Text>
-      </View>
-
-      {/* Sticky Footer Action */}
-      <View style={styles.footer}>
         <TouchableOpacity style={styles.addButton}>
           <Text style={styles.addButtonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+
+    
+    </SafeAreaView>
   );
 };
 
@@ -88,6 +99,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50, // Adjust for safe area (status bar)
+    left: 20,
+    backgroundColor: Colors.primary, // Background color for better visibility
+    borderRadius: 20,
+    padding: 10,
+    zIndex: 1, // Ensures it floats above other content
   },
 });
 
