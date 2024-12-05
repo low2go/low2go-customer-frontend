@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import GridItem from '@/components/List/GridItem';
-import { Colors } from '@/constants/colors';
-import { ProductContext, ProductContextType } from '@/context/ProductContext';
+import GridItem from '@/app/components/List/GridItem';
+import { Colors } from '@/app/constants/colors';
+import { ProductContext, ProductContextType } from '@/app/context/ProductContext';
+import { useNavigation } from 'expo-router';
 
 const ShopScreen = () => {
   // Access the context
@@ -35,8 +36,17 @@ const ShopScreen = () => {
     );
   }
 
+  const navigation = useNavigation();
+
+  const goToItemDetail = () => {
+    navigation.navigate('ItemDetail')
+  };
+
   return (
     <View style={styles.container}>
+            <TouchableOpacity onPress={goToItemDetail}>
+        <Text>Go to Item Detail</Text>
+      </TouchableOpacity>
       <Text style={styles.header}>Shop</Text>
       <FlashList
         data={products} // Use products from context

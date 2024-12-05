@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { Colors } from '@/constants/colors';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Colors } from '@/app/constants/colors';
 
 type GridItemProps = {
   productId: string;

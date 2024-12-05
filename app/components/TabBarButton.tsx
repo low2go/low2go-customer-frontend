@@ -6,10 +6,10 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons'
-import { icon } from '@/constants/icon';
+import { icon } from '@/app/constants/icon';
 import Animated, {useSharedValue, withSpring } from "react-native-reanimated"
 import { useAnimatedStyle,  interpolate} from 'react-native-reanimated';
-import { Colors } from '@/constants/colors';
+import { Colors } from '@/app/constants/colors';
 
 const TabBarButton = ({
     onPress,
@@ -59,24 +59,25 @@ const TabBarButton = ({
     })
 
 
-
+    const IconComponent = icon[routeName];
 
     return (
-        <Pressable
-        onPress={onPress}
-        onLongPress={onLongPress}
-        style={styles.tabbarItem}
-      >
+      <Pressable onPress={onPress} onLongPress={onLongPress} style={styles.tabbarItem}>
         <Animated.View style={animatedIconStyle}>
-        {icon[routeName]({
-           color: isFocused ? Colors.secondary : Colors.text 
-        })}
+          {IconComponent ? (
+            <IconComponent color={isFocused ? Colors.secondary : Colors.text} />
+          ) : (
+            <Feather name="help-circle" size={24} color={Colors.text} /> // Fallback icon
+          )}
         </Animated.View>
-        <Animated.Text style={[{ color: isFocused ? colors.primary : colors.text, fontSize: 12}, animatedTextStyle]}>{label}</Animated.Text>
-
+        <Animated.Text
+          style={[{ color: isFocused ? colors.primary : colors.text, fontSize: 12 }, animatedTextStyle]}
+        >
+          {label}
+        </Animated.Text>
       </Pressable>
     );
-};
+  };
 
 export default TabBarButton
 
