@@ -44,24 +44,22 @@ const ShopScreen = () => {
 
   return (
     <View style={styles.container}>
-            <TouchableOpacity onPress={goToItemDetail}>
-        <Text>Go to Item Detail</Text>
-      </TouchableOpacity>
       <Text style={styles.header}>Shop</Text>
       <FlashList
         data={products} // Use products from context
         keyExtractor={(item) => item.productId}
         renderItem={({ item }) => (
-            <GridItem
-              name={item.name}
-              productId={item.productId}
-              stock={item.stock}
-              price={item.price}
-              imageUrl={item.imageUrl}
-            />
-        )}        
-        numColumns={2}
-      />
+          <GridItem
+            name={item.name}
+            productId={item.productId}
+            stock={item.stock}
+            price={item.price}
+            imageUrl={item.imageUrl}
+            navigation={navigation}
+    />
+  )}
+  numColumns={2}
+/>
     </View>
   );
 };
