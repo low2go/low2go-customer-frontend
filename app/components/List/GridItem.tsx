@@ -14,7 +14,7 @@ type GridItemProps = {
 
 const GridItem = ({ name, productId, stock, price, imageUrl, navigation }: GridItemProps) => {
   const handlePress = () =>
-    navigation.navigate('ItemDetail', {
+    navigation.navigate('Item Detail', {
       product: { name, productId, stock, price, imageUrl, navigation },
   });
 

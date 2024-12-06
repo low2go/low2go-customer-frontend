@@ -1,12 +1,19 @@
+import { createStackNavigator } from '@react-navigation/stack';
 import { Stack } from 'expo-router';
 import React from 'react';
+import ShopScreen from '.';
+import ItemDetailScreen from './ItemDetail'; 
+import Cart from '../pages/CartPage';
+
+
+const ShopStack = createStackNavigator();
 
 export default function ShopLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Shop' }} />
-      <Stack.Screen name="ItemDetail" options={{ title: 'Item Detail', headerShown: false }} />
-
-    </Stack>
+    <ShopStack.Navigator>
+      <ShopStack.Screen name="Shop" component={ShopScreen}  options={{headerShown: false}}/>
+      <ShopStack.Screen name="Item Detail" component={ItemDetailScreen}  options={{headerShown: false}} />
+      <ShopStack.Screen name="Cart Page" component={Cart} options={{headerShown: false}}/>
+    </ShopStack.Navigator>
   );
 }
