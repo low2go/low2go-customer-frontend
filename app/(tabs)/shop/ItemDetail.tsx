@@ -12,7 +12,7 @@ const ItemDetailScreen = () => {
   return (
     
     <SafeAreaView style={styles.container}>
-      {/* Hero Image */}
+
 
       <TouchableOpacity
         style={styles.backButton}

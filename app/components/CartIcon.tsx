@@ -6,8 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 const CartIcon = () => {
   const navigation = useNavigation();
 
+  console.log(navigation.getState());
+
   const handlePress = () => {
-    navigation.navigate("CartScreen"); // Navigate to the cart screen
+    navigation.navigate("Cart Page"); // Navigate to the cart screen
   };
 
   return (
