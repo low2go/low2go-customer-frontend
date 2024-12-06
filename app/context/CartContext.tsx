@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProductContext, ProductProvider } from './ProductContext';
 
 // Define the cart item type (storing only productId and quantity)
 export type CartItemObj = {
@@ -9,6 +10,7 @@ export type CartItemObj = {
 
 export interface CartContextType {
   cartItems: CartItemObj[];
+  cartTotal: number;
   loading: boolean;
   error: string | null;
   addToCart: (productId: string, quantity: number) => void;
@@ -19,6 +21,7 @@ export interface CartContextType {
 // Provide a default value for the context to ensure it's never undefined
 const defaultContextValue: CartContextType = {
   cartItems: [],
+  cartTotal: 0,
   loading: false,
   error: null,
   addToCart: () => {},
@@ -30,13 +33,24 @@ type CartProviderProps = {
   children: ReactNode;
 };
 
+
+const calculateCartTotal = (cartItems: CartItemObj[], products: Product[]) => {
+    return cartItems.reduce((total, cartItem) => {
+      const product = products.find(product => product.productId === cartItem.productId);
+      
+      return product ? total + product.price * cartItem.quantity : total;
+    }, 0); 
+  };
+
 export const CartContext = createContext<CartContextType>(defaultContextValue);
 
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [cartItems, setCartItems] = useState<CartItemObj[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [cartTotal, setCartTotal] = useState<number>(0); // State for the total price
 
+  const { products } = useContext(ProductContext); // Make sure you have 'products' in your ProductContext
   // Load cart data from AsyncStorage
   const loadCartFromStorage = async () => {
     try {
@@ -50,7 +64,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   };
 
   // Save cart data to AsyncStorage
-  const saveCartToStorage = async (cartItems: CartItem[]) => {
+  const saveCartToStorage = async (cartItems: CartItemObj[]) => {
     try {
       await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
     } catch (err) {
@@ -118,14 +132,20 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const clearCart = () => {
     setCartItems([]);
     saveCartToStorage([]); // Clear the cart in AsyncStorage as well
+    calculateCartTotal([], []); // Reset the total
   };
 
   useEffect(() => {
     loadCartFromStorage(); // Load cart data when the component mounts
   }, []);
 
+  useEffect(() => {
+    const total = calculateCartTotal(cartItems, products);
+    setCartTotal(total);
+  }, [cartItems, products]);
+
   return (
-    <CartContext.Provider value={{ cartItems, loading, error, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cartItems, cartTotal, loading, error, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

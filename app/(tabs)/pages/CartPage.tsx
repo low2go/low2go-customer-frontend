@@ -4,7 +4,7 @@ import { CartContext } from '@/app/context/CartContext';
 import CartItem from '@/app/components/Cart/CartItem';
 
 const CartScreen = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, cartTotal } = useContext(CartContext);
 
   const renderItem = ({ item }: any) => (
     <CartItem productId={item.productId} quantity={item.quantity} />
@@ -22,7 +22,13 @@ const CartScreen = () => {
           renderItem={renderItem}
         />
       )}
+
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalText}>Total: ${cartTotal.toFixed(2)}</Text>
+      </View>
     </View>
+
+    
   );
 };
 
@@ -43,6 +49,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#777',
     marginTop: 20,
+  },
+  totalContainer: {
+    marginTop: 20, // Space above the total
+    padding: 16,
+    backgroundColor: '#fff', // Background color for the total section
+    borderRadius: 8, // Rounded corners
+    shadowColor: '#000', // Add shadow for better visibility
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 2, // For Android shadow
+  },
+  totalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333', // Dark text for total
+    textAlign: 'center',
   },
 });
 

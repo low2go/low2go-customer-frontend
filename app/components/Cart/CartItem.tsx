@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row', // Image and text side-by-side
       alignItems: 'center',
       padding: 10,
-      marginVertical: 8,
+      marginVertical: 2,
       backgroundColor: 'white',
       borderRadius: 10,
       elevation: 3, // Shadow on Android
