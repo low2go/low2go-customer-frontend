@@ -11,9 +11,9 @@ const ShopStack = createStackNavigator();
 export default function ShopLayout() {
   return (
     <ShopStack.Navigator>
-      <ShopStack.Screen name="Shop" component={ShopScreen} />
-      <ShopStack.Screen name="Item Detail" component={ItemDetailScreen} />
-      <ShopStack.Screen name="Cart Page" component={Cart} />
+      <ShopStack.Screen name="Shop" component={ShopScreen}  options={{headerShown: false}}/>
+      <ShopStack.Screen name="Item Detail" component={ItemDetailScreen}  options={{headerShown: false}} />
+      <ShopStack.Screen name="Cart Page" component={Cart} options={{headerShown: false}}/>
     </ShopStack.Navigator>
   );
 }
