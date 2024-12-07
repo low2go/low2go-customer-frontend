@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CartContext } from '@/app/context/CartContext'; // Import CartContext
 import { Colors } from '@/app/constants/colors';
 import { Product } from '@/app/context/ProductContext';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ItemDetailScreen = () => {
   const route = useRoute();
@@ -13,12 +14,28 @@ const ItemDetailScreen = () => {
 
   const { addToCart } = useContext(CartContext); // Access CartContext
 
+  const [quantity, setQuantity] = useState(1);
+
+  const incrementQuantity = () => {
+    // Prevent incrementing beyond the available stock
+    if (quantity < product.stock) {
+      setQuantity((prev) => prev + 1);
+    }
+  };
+
+  const decrementQuantity = () => {
+    // Prevent decrementing below 1
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
+
   const handleAddToCart = () => {
-    addToCart(product.productId, 1); // Add the item to cart with quantity 1
+    addToCart(product.productId, quantity); // Add the item to cart with quantity 1
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => product.navigation.goBack()}
@@ -38,12 +55,22 @@ const ItemDetailScreen = () => {
           vel lacus fermentum volutpat. {/* Placeholder description */}
         </Text>
 
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity style={styles.quantityButton} onPress={decrementQuantity}>
+            <Ionicons name="remove" size={20} color="#fff" />
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>{quantity}</Text>
+          <TouchableOpacity style={styles.quantityButton} onPress={incrementQuantity}>
+            <Ionicons name="add" size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
+
         {/* Add to Cart Button */}
         <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
           <Text style={styles.addButtonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -84,20 +111,41 @@ const styles = StyleSheet.create({
     color: '#888',
     lineHeight: 20,
   },
-  footer: {
-    width: '100%',
-    padding: 16,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderColor: '#ddd',
-    justifyContent: 'center',
+  quantityContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 16,
+  },
+  quantityButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    padding: 10,
+    marginHorizontal: 8,
+  },
+  quantityInput: {
+    width: 50,
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    textAlign: 'center',
+    borderRadius: 5,
+    fontSize: 18,
+    color: '#333',
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    width: 30,
   },
   addButton: {
     backgroundColor: '#28a745',
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 8,
+    alignItems: 'center',
   },
   addButtonText: {
     color: '#fff',
