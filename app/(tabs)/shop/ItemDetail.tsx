@@ -1,31 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CartContext } from '@/app/context/CartContext'; // Import CartContext
 import { Colors } from '@/app/constants/colors';
 
 const ItemDetailScreen = () => {
   const route = useRoute();
   const { product } = route.params;
 
+  const { addToCart } = useContext(CartContext); // Access CartContext
+
+  const handleAddToCart = () => {
+    addToCart(product.productId, 1); // Add the item to cart with quantity 1
+  };
+
   return (
-    
     <SafeAreaView style={styles.container}>
-
-
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => product.navigation.goBack()}
       >
         <Ionicons name="arrow-back" size={24} color="#fff" />
       </TouchableOpacity>
+
       <Image source={{ uri: product.imageUrl }} style={styles.image} />
 
       {/* Details Section */}
       <View style={styles.detailsContainer}>
-
-
         <Text style={styles.name}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>
         <Text style={styles.stock}>Stock Available: {product.stock}</Text>
@@ -33,12 +36,12 @@ const ItemDetailScreen = () => {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut urna
           vel lacus fermentum volutpat. {/* Placeholder description */}
         </Text>
-        <TouchableOpacity style={styles.addButton}>
+
+        {/* Add to Cart Button */}
+        <TouchableOpacity style={styles.addButton} onPress={handleAddToCart}>
           <Text style={styles.addButtonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
-
-    
     </SafeAreaView>
   );
 };
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 50, // Adjust for safe area (status bar)
+    top: 30, // Adjust for safe area (status bar)
     left: 20,
     backgroundColor: Colors.primary, // Background color for better visibility
     borderRadius: 20,
