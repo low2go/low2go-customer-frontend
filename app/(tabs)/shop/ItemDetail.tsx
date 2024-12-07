@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: 50, // Adjust for safe area (status bar)
+    top: 30, // Adjust for safe area (status bar)
     left: 20,
     backgroundColor: Colors.primary, // Background color for better visibility
     borderRadius: 20,

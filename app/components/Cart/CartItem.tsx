@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { ProductContext } from '@/app/context/ProductContext'; // Ensure the correct path
 import { Colors } from '@/app/constants/colors';
+import { CartContext } from '@/app/context/CartContext';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Ensure you use a supported icon pack
+import ItemQuantity from './ItemQuantity';
+
 
 type CartItemProps = {
   productId: string;
@@ -10,6 +14,7 @@ type CartItemProps = {
 
 const CartItem = ({ productId, quantity }: CartItemProps) => {
   const { products } = useContext(ProductContext); // Access products from the ProductContext
+  const {removeFromCart, addToCart} = useContext(CartContext);
   const product = products.find(item => item.productId === productId);
 
   if (!product) {
@@ -36,41 +41,58 @@ console.log(imageUrl);  // 'https://example.com/image.jpg'
         onError={() => console.warn(`Failed to load image: ${imageUrl}`)} 
       />
       {/* Product Details */}
+      {/* Product Details */}
       <View style={styles.detailsContainer}>
         <Text style={styles.nameText} numberOfLines={1}>{name}</Text>
         <Text style={styles.priceText}>Price: ${price.toFixed(2)}</Text>
-        <Text style={styles.quantityText}>Quantity: {quantity}</Text>
         <Text style={styles.totalPriceText}>Total: ${(price * quantity).toFixed(2)}</Text>
+
+        {/* Quantity Controls */}
+        <ItemQuantity 
+          productId={productId}
+          quantity={quantity}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+        />
       </View>
+
+      
+
+      <TouchableOpacity
+        style={styles.trashButton}
+        onPress={() => removeFromCart(productId, quantity)}
+      >
+        <Icon name="delete" size={24} color="#ff5252" />
+      </TouchableOpacity>
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
     cartItem: {
-      flexDirection: 'row', // Image and text side-by-side
+      flexDirection: 'row', // Image, text, and button side-by-side
       alignItems: 'center',
       padding: 10,
-      marginVertical: 2,
+      marginVertical: 4,
       backgroundColor: 'white',
       borderRadius: 10,
-      elevation: 3, // Shadow on Android
+      elevation: 2, // Shadow on Android
       shadowColor: '#000', // Shadow on iOS
       shadowOpacity: 0.1,
       shadowOffset: { width: 0, height: 2 },
       shadowRadius: 4,
-      width: '100%', // Take most of the screen width
-      alignSelf: 'center', // Center within FlatList
     },
     image: {
-      width: 80, // Fixed width
-      height: 80, // Fixed height
+      width: 80,
+      height: 80,
       resizeMode: 'contain',
       borderRadius: 10,
-      marginRight: 10, // Add spacing between image and text
+      marginRight: 10,
     },
-    textContainer: {
-      flex: 1, // Text container takes remaining space
+    detailsContainer: {
+      flex: 1, // Text container takes up remaining space
+      justifyContent: 'space-between',
     },
     nameText: {
       fontSize: 16,
@@ -82,23 +104,45 @@ const styles = StyleSheet.create({
       color: '#777',
       marginTop: 4,
     },
-    quantityText: {
-      fontSize: 14,
-      color: '#555',
-      marginTop: 4,
-    },
     totalPriceText: {
       fontSize: 14,
       fontWeight: 'bold',
       color: '#111',
       marginTop: 4,
     },
-    detailsContainer: {
-
-        justifyContent: 'space-between', // Spread details evenly
-      },
-    
+    quantityContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 8,
+    },
+    quantityText: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: '#333',
+      marginHorizontal: 8,
+    },
+    quantityButton: {
+      padding: 6,
+      borderRadius: 4,
+    },
+    trashButton: {
+      marginLeft: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    errorContainer: {
+      padding: 16,
+      backgroundColor: '#f8d7da',
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 10,
+    },
+    errorText: {
+      color: '#721c24',
+      fontSize: 14,
+      fontWeight: 'bold',
+    },
   });
-  
 
 export default CartItem;
