@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { CartContext } from '@/app/context/CartContext'; // Import CartContext
 import { Colors } from '@/app/constants/colors';
+import { Product } from '@/app/context/ProductContext';
 
 const ItemDetailScreen = () => {
   const route = useRoute();
