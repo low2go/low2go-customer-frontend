@@ -10,6 +10,7 @@ import Cart from './pages/CartPage';
 import TabBar from '../components/TabBar';
 import ProductSearch from '../components/Search/ProductSearch';
 import SpecificSearch from './pages/SpecificSearch';
+import Header from '../components/Header';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -19,15 +20,7 @@ function TabLayout() {
     <Tab.Navigator
       screenOptions={({ navigation }) => ({
         header: () => (
-          <SafeAreaView style={styles.headerContainer}>
-            {/* ProductSearch Component */}
-            <ProductSearch navigation={navigation} />
-
-            {/* Cart Icon */}
-            <TouchableOpacity onPress={() => navigation.navigate("Cart Page")} style={styles.cartIconContainer}>
-              <CartIcon />
-            </TouchableOpacity>
-          </SafeAreaView>
+          <Header navigation={navigation}/>
         ),
       })}
       tabBar={(props) => <TabBar {...props} />} // Use your custom TabBar component here
