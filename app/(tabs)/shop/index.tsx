@@ -6,11 +6,9 @@ import { Colors } from '@/app/constants/colors';
 import { ProductContext, ProductContextType } from '@/app/context/ProductContext';
 import { useNavigation } from 'expo-router';
 
-const ShopScreen = () => {
-  // Access the context
+const ShopScreen = ({ route }) => {  // Access the context
 
-  const { products, loading, error, fetchProducts } = useContext<ProductContextType>(ProductContext);
-
+  const { products, loading, error, fetchProducts } = route.params;
   useEffect(() => {
     if (products.length === 0) {
       fetchProducts();
