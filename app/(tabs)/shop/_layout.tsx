@@ -4,6 +4,7 @@ import React from 'react';
 import ShopScreen from '.';
 import ItemDetailScreen from './ItemDetail'; 
 import Cart from '../pages/CartPage';
+import SpecificSearch from '../pages/SpecificSearch';
 
 
 const ShopStack = createStackNavigator();
