@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import GridItem from '@/app/components/List/GridItem';
@@ -6,9 +6,10 @@ import { Colors } from '@/app/constants/colors';
 import { ProductContext, ProductContextType } from '@/app/context/ProductContext';
 import { useNavigation } from 'expo-router';
 
-const ShopScreen = ({ route }) => {  // Access the context
-
+const ShopScreen = ({ route }) => {
   const { products, loading, error, fetchProducts } = route.params;
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');  // Add state for sorting order
+
   useEffect(() => {
     if (products.length === 0) {
       fetchProducts();
@@ -36,11 +37,34 @@ const ShopScreen = ({ route }) => {  // Access the context
 
   const navigation = useNavigation();
 
+  // Function to toggle sorting order
+  const toggleSortOrder = () => {
+    setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
+  };
+
+  // Sort the products based on price
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === 'asc') {
+      return a.price - b.price; // Ascending order
+    } else {
+      return b.price - a.price; // Descending order
+    }
+  });
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Shop</Text>
+
+      {/* Sort Button */}
+      <TouchableOpacity style={styles.sortButton} onPress={toggleSortOrder}>
+        <Text style={styles.sortButtonText}>
+          Sort by Price ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})
+        </Text>
+      </TouchableOpacity>
+
+      {/* List of Products */}
       <FlashList
-        data={products} // Use products from context
+        data={sortedProducts} // Use the sorted products
         keyExtractor={(item) => item.productId}
         renderItem={({ item }) => (
           <GridItem
@@ -50,10 +74,10 @@ const ShopScreen = ({ route }) => {  // Access the context
             price={item.price}
             imageUrl={item.imageUrl}
             navigation={navigation}
-    />
-  )}
-  numColumns={2}
-/>
+          />
+        )}
+        numColumns={2}
+      />
     </View>
   );
 };
@@ -71,8 +95,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
-  row: {
-    justifyContent: 'space-between',
+  sortButton: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  sortButtonText: {
+    color: Colors.white,
+    fontSize: 16,
   },
   text: {
     color: Colors.text,
