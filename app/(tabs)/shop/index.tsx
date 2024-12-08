@@ -1,14 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import GridItem from '@/app/components/List/GridItem';
 import { Colors } from '@/app/constants/colors';
-import { ProductContext, ProductContextType } from '@/app/context/ProductContext';
 import { useNavigation } from 'expo-router';
+import SortButton from '@/app/components/Search/SortButton';
 
 const ShopScreen = ({ route }) => {
   const { products, loading, error, fetchProducts } = route.params;
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');  // Add state for sorting order
+  const [sortOrder, setSortOrder] = useState<string>('price_asc');  // Default sorting by price ascending
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (products.length === 0) {
@@ -35,36 +37,38 @@ const ShopScreen = ({ route }) => {
     );
   }
 
-  const navigation = useNavigation();
-
-  // Function to toggle sorting order
-  const toggleSortOrder = () => {
-    setSortOrder(prevOrder => (prevOrder === 'asc' ? 'desc' : 'asc'));
-  };
-
-  // Sort the products based on price
+  // Function to sort the products based on the selected sort order
   const sortedProducts = [...products].sort((a, b) => {
-    if (sortOrder === 'asc') {
-      return a.price - b.price; // Ascending order
-    } else {
-      return b.price - a.price; // Descending order
+    switch (sortOrder) {
+      case 'price_asc':
+        return a.price - b.price; // Ascending order by price
+      case 'price_desc':
+        return b.price - a.price; // Descending order by price
+      case 'name_asc':
+        return a.name.localeCompare(b.name); // Ascending order by name
+      case 'name_desc':
+        return b.name.localeCompare(a.name); // Descending order by name
+      default:
+        return 0;
     }
   });
+
+  // Function to handle sorting option passed from SortButton
+  const handleSelectOption = (selectedSortOrder: string) => {
+    setSortOrder(selectedSortOrder); // Update the sortOrder state
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Shop</Text>
 
-      {/* Sort Button */}
-      <TouchableOpacity style={styles.sortButton} onPress={toggleSortOrder}>
-        <Text style={styles.sortButtonText}>
-          Sort by Price ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})
-        </Text>
-      </TouchableOpacity>
+      <View>
+        <SortButton onSortSelect={handleSelectOption} />
+      </View>
 
       {/* List of Products */}
       <FlashList
-        data={sortedProducts} // Use the sorted products
+        data={sortedProducts}  // Use the sorted products
         keyExtractor={(item) => item.productId}
         renderItem={({ item }) => (
           <GridItem
@@ -94,18 +98,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 16,
-  },
-  sortButton: {
-    backgroundColor: Colors.primary,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    marginBottom: 16,
-    alignItems: 'center',
-  },
-  sortButtonText: {
-    color: Colors.white,
-    fontSize: 16,
   },
   text: {
     color: Colors.text,
