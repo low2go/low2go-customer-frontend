@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '@/app/constants/colors';
 import { Picker } from '@react-native-picker/picker'; // Correct import for Picker
+import { Ionicons } from '@expo/vector-icons';
 
 
 interface SortButtonProps {
@@ -10,7 +11,7 @@ interface SortButtonProps {
 
 const SortButton: React.FC<SortButtonProps> = ({ onSortSelect }) => {
   const [isModalVisible, setModalVisible] = useState(false); // Modal visibility state
-  const [sortOrder, setSortOrder] = useState<string>('price_asc');  // Default sorting by price ascending
+  const [sortOrder, setSortOrder] = useState<string>('');  // Default sorting by price ascending
   const [buttonLabel, setButtonLabel] = useState<string>('Sort Items'); // Default button label
   
   // Mapping sort values to button labels
@@ -29,11 +30,31 @@ const SortButton: React.FC<SortButtonProps> = ({ onSortSelect }) => {
     setModalVisible(false); // Close modal after selection
   };
 
-  return (
-    <View>
-      {/* Button to open the sort options modal, with dynamic label */}
-      <Button title={buttonLabel} onPress={() => setModalVisible(true)} />
+  // Function to handle clearing the selected sort option
+  const handleClearSort = () => {
+    setSortOrder('');  // Clear sort order
+    setButtonLabel('Sort Items');  // Reset the button label to default
+    onSortSelect('');  // Pass the cleared value back to the parent
+  };
 
+  return (
+    <View style={styles.sortButtonContainer}>
+      {/* Button to open the sort options modal, with dynamic label */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.buttonText}>{buttonLabel}</Text>
+        </TouchableOpacity>
+        
+        {/* Show close button if sortOrder is set */}
+        {sortOrder && (
+          <TouchableOpacity onPress={handleClearSort} style={styles.clearButton}>
+            <Ionicons name="close-outline" size={20} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
       {/* Modal for Sorting Options */}
       <Modal
         visible={isModalVisible}
@@ -78,6 +99,33 @@ const SortButton: React.FC<SortButtonProps> = ({ onSortSelect }) => {
 };
 
 const styles = StyleSheet.create({
+  sortButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+  },
+  button: {
+    paddingVertical: 5,
+    paddingHorizontal: 5,
+    borderRadius: 5,
+
+  },
+  buttonText: {
+    fontSize: 16,  // Set the desired text size here
+    color: 'black',
+  },
+  clearButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
