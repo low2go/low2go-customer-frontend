@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
-    paddingHorizontal: 15, 
+    marginHorizontal: 15,
     justifyContent: 'space-between',
   },
   cartIconContainer: {

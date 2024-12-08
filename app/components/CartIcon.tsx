@@ -13,17 +13,14 @@ const CartIcon = () => {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handlePress}>
+    <TouchableOpacity onPress={handlePress}>
       <Ionicons name="cart" size={30} color="#333" />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10, // Aligns the icon with the header's right edge
 
-  },
 });
 
 export default CartIcon;
