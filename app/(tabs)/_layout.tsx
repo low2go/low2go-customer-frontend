@@ -7,6 +7,7 @@ import Orders from './orders';
 import Profile from './profile/profile';
 import CartIcon from '@/app/components/CartIcon'; // Your cart icon component
 import Cart from './pages/CartPage';
+import TabBar from '../components/TabBar';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -16,13 +17,12 @@ function TabLayout() {
     <Tab.Navigator
       screenOptions={({ navigation }) => ({
         headerRight: () => (
-          <TouchableOpacity
-            style={{ marginRight: 5 }}
-          >
-            <CartIcon /> 
+          <TouchableOpacity style={{ marginRight: 5 }}>
+            <CartIcon />
           </TouchableOpacity>
         ),
       })}
+      tabBar={(props) => <TabBar {...props} />} // Use your custom TabBar component here
     >
       <Tab.Screen name="Home" component={Index} />
       <Tab.Screen name="Shop" component={ShopLayout} />
