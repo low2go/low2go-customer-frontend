@@ -38,52 +38,49 @@ const GridItem = ({ name, productId, stock, price, imageUrl, navigation }: GridI
 
 const styles = StyleSheet.create({
   gridItem: {
-    flex: 1,
-    margin: 10, // Increased margin for better spacing between items
-    backgroundColor: 'cream',
-    height: 220, // Slightly increased height for better proportions
-    borderRadius: 10, // Smooth corners
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'flex-start', // Ensure content aligns at the top
-    borderWidth: 1, // Border to visually separate items
-    borderColor: '#ddd', // Light gray border
-    shadowColor: '#000', // Shadow for iOS
-    shadowOpacity: 0.2,
+    flexDirection: 'row', // Lay items horizontally
+
+    backgroundColor: '#f9f9f9', // Neutral background for better contrast
+
+    overflow: 'hidden', // Clip content inside the border radius
+    alignItems: 'center', // Center items vertically
+    borderWidth: 1, 
+    borderColor: '#ddd',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-    elevation: 5, // Shadow for Android
+    elevation: 3, // Shadow for Android
   },
   image: {
-    width: '100%',
-    height: 140, // Increased height for image prominence
+    width: 100, // Fixed width for consistent layout
+    height: 100, // Fixed height to maintain aspect ratio
     resizeMode: 'cover',
     borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10, // Smooth corners for the left side of the image
   },
   textContainer: {
-    flex: 1,
-    width: '100%',
-    padding: 10,
-    alignItems: 'flex-start',
-    justifyContent: 'space-between', // Spread out the text evenly
+    flex: 1, // Take up the remaining space
+    padding: 10, // Spacing inside the text container
+    justifyContent: 'space-between', // Spread the text evenly
   },
   priceText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     color: Colors.secondary,
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.text,
-    marginVertical: 4,
     fontWeight: '500',
+    marginVertical: 2,
   },
   stockText: {
-    fontSize: 14,
+    fontSize: 12,
     color: Colors.primary,
   },
 });
+
 
 
 export default GridItem;
