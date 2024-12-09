@@ -27,9 +27,10 @@ const styles = StyleSheet.create({
     headerContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: 10,
+      marginVertical: 10,
       marginHorizontal: 15,
       justifyContent: 'space-between',
+
     },
     cartIconContainer: {
       marginLeft: 10, // Space between the search bar and the cart icon

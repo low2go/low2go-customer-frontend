@@ -15,7 +15,7 @@ const ShopScreen = ({ route }) => {
   useEffect(() => {
     if (products.length === 0) {
       fetchProducts();
-    }
+   }
   }, [products, fetchProducts]);
 
   // Show loading or error states

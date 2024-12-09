@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextInput, View, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Make sure to install this: expo install @expo/vector-icons
+import { Ionicons } from "@expo/vector-icons";
 
 type ProductSearchProps = {
   navigation: any;
@@ -8,11 +8,35 @@ type ProductSearchProps = {
 
 const ProductSearch: React.FC<ProductSearchProps> = ({ navigation }) => {
   const [query, setQuery] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (query.trim() !== "") {
-      // Navigate to the Specific Search screen with the search query as a parameter
-      navigation.navigate("Specific Search", { searchQuery: query.trim() });
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch(`http://localhost:8080/catalog/search?query=${query}`);
+        const data = await response.json();
+        
+        navigation.navigate("Specific Search", {
+          query,
+          products: data,
+          loading: false, // Pass the loading state as false once data is fetched
+          error: null,
+        });
+      } catch (err) {
+        setError("Failed to fetch products");
+        navigation.navigate("Specific Search", {
+          query,
+          products: [],
+          loading: false,
+          error: "Failed to fetch products",
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -26,6 +50,10 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ navigation }) => {
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={handleSearch} // Trigger search on "Enter"
+        autoComplete="off" // Disable autocomplete
+        autoCorrect={false} // Disable autocorrection
+        keyboardType="default" // Ensure standard keyboard behavior
+        spellCheck={false} // Disable spell checking
       />
     </View>
   );
@@ -37,17 +65,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#ddd",
-    backgroundColor: "#f9f9f9", // Light background for modern look
-    borderRadius: 25, // Rounded edges
-    paddingHorizontal: 15, // Padding inside the container
+    backgroundColor: "#f9f9f9",
+    borderRadius: 25,
+    paddingHorizontal: 15,
     height: 40,
     minWidth: 300,
   },
   icon: {
-    marginRight: 10, // Space between icon and input
+    marginRight: 10,
   },
   input: {
-    flex: 1, // Input takes the remaining space
+    flex: 1,
     fontSize: 16,
     color: "#333",
   },
