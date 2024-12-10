@@ -11,6 +11,7 @@ import TabBar from '../components/TabBar';
 import ProductSearch from '../components/Search/ProductSearch';
 import SpecificSearch from './pages/SpecificSearch';
 import Header from '../components/Header';
+import HomeLayout from './home/_layout';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -21,7 +22,7 @@ function TabLayout() {
 
       tabBar={(props) => <TabBar {...props} />} // Use your custom TabBar component here
     >
-      <Tab.Screen name="Home" component={Index} options={{headerShown: false}}/>
+      <Tab.Screen name="Home" component={HomeLayout} options={{headerShown: false}}/>
       <Tab.Screen name="Shop" component={ShopLayout} options={{headerShown: false}}/>
       <Tab.Screen name="Orders" component={Orders} options={{headerShown: false}} />
       <Tab.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
