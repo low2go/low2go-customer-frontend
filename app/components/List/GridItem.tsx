@@ -1,8 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Colors } from '@/app/constants/colors';
 import { CartContext } from '@/app/context/CartContext';
+import { CartItemObj } from '@/app/context/CartContext';
 
 type GridItemProps = {
   productId: string;
@@ -15,25 +16,39 @@ type GridItemProps = {
 
 const GridItem = ({ name, productId, stock, price, imageUrl, navigation }: GridItemProps) => {
 
-  const { addToCart } = useContext(CartContext); // Access CartContext
-  const [quantity, setQuantity] = useState(1);
+  const { addToCart, removeFromCart, cartItems } = useContext(CartContext); // Access CartContext
+  const getCartItemQuantity: (productId: string) => number | undefined = (productId) => {
+    const cartItem = cartItems.find((item) => item.productId === productId);
+    return cartItem ? cartItem.quantity : 0;
+  }; 
+  
+  const gridItemQuantity = getCartItemQuantity(productId);
+
+  const [quantity, setQuantity] = useState(gridItemQuantity);
 
   const handleAddToCart = () => {
-    addToCart(productId, quantity); // Add the item to cart with quantity 1
+    addToCart(productId, quantity || 1); // Add the item with at least a quantity of 1
+    setQuantity(1); // Ensure quantity reflects the addition
   };
 
   const incrementQuantity = () => {
     // Prevent incrementing beyond the available stock
     if (quantity < stock) {
       setQuantity((prev) => prev + 1);
+      addToCart(productId, 1);
     }
   };
 
+  useEffect(() => {
+    setQuantity(getCartItemQuantity(productId));
+  }, [cartItems, productId]);
+  
+
   const decrementQuantity = () => {
     // Prevent decrementing below 1
-    if (quantity > 1) {
       setQuantity((prev) => prev - 1);
-    }
+      removeFromCart(productId, 1);
+    
   };
 
   const handlePress = () =>
@@ -62,9 +77,21 @@ const GridItem = ({ name, productId, stock, price, imageUrl, navigation }: GridI
         <TouchableOpacity style={styles.favoriteButton} onPress={() => console.log('Favorite pressed')}>
           <Text style={styles.favoriteButtonText}>Favorite</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.cartButton} onPress={handleAddToCart}>
-          <Text style={styles.cartButtonText}>Add to Cart</Text>
-        </TouchableOpacity>
+        {quantity === 0 ? (
+          <TouchableOpacity style={styles.cartButton} onPress={handleAddToCart}>
+            <Text style={styles.cartButtonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.counterButton}>
+            <TouchableOpacity onPress={decrementQuantity}>
+              <Text style={styles.counterText}>-</Text>
+            </TouchableOpacity>
+            <Text style={styles.cartButtonText}>{quantity}</Text>
+            <TouchableOpacity onPress={incrementQuantity}>
+              <Text style={styles.counterText}>+</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -146,6 +173,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
   },  
+  counterButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    flex: 1, // Each button takes equal width
+    backgroundColor: Colors.primary, // Use your preferred color
+    borderRadius: 20,
+    alignItems: 'center',
+    gap: 40,
+  },
+  counterText: {
+    color: '#fff',
+    fontSize: 24,
+    marginBottom: 3,
+    fontWeight: '600',
+  }
   
 });
 
