@@ -17,7 +17,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ navigation }) => {
       setError(null);
 
       try {
-        const response = await fetch(`http://localhost:8080/catalog/search?query=${query}`);
+        const response = await fetch(`http://ec2-18-117-162-62.us-east-2.compute.amazonaws.com:8080/catalog/search?query=${query}`);
         const data = await response.json();
         
         navigation.navigate("Specific Search", {

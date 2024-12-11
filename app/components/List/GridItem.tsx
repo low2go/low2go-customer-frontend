@@ -83,7 +83,7 @@ const GridItem = ({ name, productId, stock, price, imageUrl, navigation }: GridI
           </TouchableOpacity>
         ) : (
           <View style={styles.counterButton}>
-            <TouchableOpacity onPress={decrementQuantity}>
+            <TouchableOpacity onPress={decrementQuantity} >
               <Text style={styles.counterText}>-</Text>
             </TouchableOpacity>
             <Text style={styles.cartButtonText}>{quantity}</Text>
@@ -175,19 +175,21 @@ const styles = StyleSheet.create({
   },  
   counterButton: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flex: 1, // Each button takes equal width
     backgroundColor: Colors.primary, // Use your preferred color
     borderRadius: 20,
     alignItems: 'center',
-    gap: 40,
+
   },
   counterText: {
     color: '#fff',
     fontSize: 24,
     marginBottom: 3,
     fontWeight: '600',
-  }
+    paddingHorizontal: 20,
+  },
+
   
 });
 
