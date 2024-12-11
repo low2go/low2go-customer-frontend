@@ -11,6 +11,7 @@ import TabBar from '../components/TabBar';
 import ProductSearch from '../components/Search/ProductSearch';
 import SpecificSearch from './pages/SpecificSearch';
 import Header from '../components/Header';
+import HomeLayout from './home/_layout';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -18,17 +19,14 @@ const Stack = createStackNavigator();
 function TabLayout() {
   return (
     <Tab.Navigator
-      screenOptions={({ navigation }) => ({
-        header: () => (
-          <Header navigation={navigation}/>
-        ),
-      })}
+
       tabBar={(props) => <TabBar {...props} />} // Use your custom TabBar component here
     >
-      <Tab.Screen name="Home" component={Index} />
-      <Tab.Screen name="Shop" component={ShopLayout} />
-      <Tab.Screen name="Orders" component={Orders} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Home" component={HomeLayout} options={{headerShown: false}}/>
+      <Tab.Screen name="Shop" component={ShopLayout} options={{headerShown: false}}/>
+      <Tab.Screen name="Orders" component={Orders} options={{headerShown: false}} />
+      <Tab.Screen name="Profile" component={Profile} options={{headerShown: false}}/>
+
     </Tab.Navigator>
   );
 }
@@ -51,8 +49,13 @@ export default function AppNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Main" component={TabLayout} options={{ headerShown: false }} />
       <Stack.Screen name="Cart Page" component={Cart} />
-      <Stack.Screen name="Specific Search" component={SpecificSearch}/>
-
+      <Stack.Screen
+        name="Specific Search"
+        component={SpecificSearch}
+        options={({ navigation }) => ({
+          header: () => <Header navigation={navigation} />, // Custom Header for Specific Search
+        })}
+      />
     </Stack.Navigator>
   );
 }

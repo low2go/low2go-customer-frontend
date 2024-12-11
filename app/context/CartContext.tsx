@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProductContext, ProductProvider } from './ProductContext';
+import { Product } from './ProductContext';
 
 // Define the cart item type (storing only productId and quantity)
 export type CartItemObj = {
@@ -10,6 +11,7 @@ export type CartItemObj = {
 
 export interface CartContextType {
   cartItems: CartItemObj[];
+  cartCount: number;
   cartTotal: number;
   loading: boolean;
   error: string | null;
@@ -21,6 +23,7 @@ export interface CartContextType {
 // Provide a default value for the context to ensure it's never undefined
 const defaultContextValue: CartContextType = {
   cartItems: [],
+  cartCount: 0,
   cartTotal: 0,
   loading: false,
   error: null,
@@ -33,14 +36,12 @@ type CartProviderProps = {
   children: ReactNode;
 };
 
-
 const calculateCartTotal = (cartItems: CartItemObj[], products: Product[]) => {
-    return cartItems.reduce((total, cartItem) => {
-      const product = products.find(product => product.productId === cartItem.productId);
-      
-      return product ? total + product.price * cartItem.quantity : total;
-    }, 0); 
-  };
+  return cartItems.reduce((total, cartItem) => {
+    const product = products.find(product => product.productId === cartItem.productId);
+    return product ? total + product.price * cartItem.quantity : total;
+  }, 0);
+};
 
 export const CartContext = createContext<CartContextType>(defaultContextValue);
 
@@ -49,8 +50,11 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [cartTotal, setCartTotal] = useState<number>(0); // State for the total price
+  const [cartCount, setCartCount] = useState<number>(0); // State for the total price
+
 
   const { products } = useContext(ProductContext); // Make sure you have 'products' in your ProductContext
+
   // Load cart data from AsyncStorage
   const loadCartFromStorage = async () => {
     try {
@@ -105,19 +109,21 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     setLoading(true);
     setError(null);
     try {
-      const updatedCart = cartItems.map(item => {
-        if (item.productId === productId) {
-          const newQuantity = item.quantity - quantityToRemove;
-          if (newQuantity > 0) {
-            // If quantity is greater than 0, just update the quantity
-            return { ...item, quantity: newQuantity };
-          } else {
-            // If the new quantity is 0 or less, remove the item
-            return null; // We'll filter it out in the next step
+      const updatedCart = cartItems
+        .map(item => {
+          if (item.productId === productId) {
+            const newQuantity = item.quantity - quantityToRemove;
+            if (newQuantity > 0) {
+              // If quantity is greater than 0, just update the quantity
+              return { ...item, quantity: newQuantity };
+            } else {
+              // If the new quantity is 0 or less, remove the item
+              return null; // We'll filter it out in the next step
+            }
           }
-        }
-        return item;
-      }).filter(item => item !== null); // Filter out null values (removed items)
+          return item;
+        })
+        .filter(item => item !== null); // Filter out null values (removed items)
 
       setCartItems(updatedCart);
       saveCartToStorage(updatedCart);
@@ -135,6 +141,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     calculateCartTotal([], []); // Reset the total
   };
 
+  const calculateCartItemCount = (cartItems: CartItemObj[]): number => {
+    return cartItems.reduce((count, item) => count + item.quantity, 0);
+  };
+
   useEffect(() => {
     loadCartFromStorage(); // Load cart data when the component mounts
   }, []);
@@ -142,10 +152,11 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   useEffect(() => {
     const total = calculateCartTotal(cartItems, products);
     setCartTotal(total);
+    setCartCount(calculateCartItemCount(cartItems));
   }, [cartItems, products]);
 
   return (
-    <CartContext.Provider value={{ cartItems, cartTotal, loading, error, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cartItems, cartCount, cartTotal, loading, error, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

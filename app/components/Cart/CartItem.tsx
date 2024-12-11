@@ -27,9 +27,6 @@ const CartItem = ({ productId, quantity }: CartItemProps) => {
 
   const { name, price, imageUrl } = product;
 
-console.log(name);      // 'T-Shirt'
-console.log(price);     // 29.99
-console.log(imageUrl);  // 'https://example.com/image.jpg'
 
 
   return (

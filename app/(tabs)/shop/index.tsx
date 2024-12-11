@@ -80,7 +80,7 @@ const ShopScreen = ({ route }) => {
             navigation={navigation}
           />
         )}
-        numColumns={2}
+
       />
     </View>
   );
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    padding: 16,
+
   },
   header: {
     color: Colors.text,
