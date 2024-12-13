@@ -19,7 +19,7 @@ const SignUpScreen = ({ navigation }: { navigation: any }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       Alert.alert('Success', 'Account created successfully!');
-      navigation.replace('Login'); // Navigate back to Login screen
+      navigation.navigate('Login'); // Navigate back to Login screen
     } catch (error) {
       console.error('Error creating account:', error);
       Alert.alert('Error', 'Failed to create account. Please try again.');
