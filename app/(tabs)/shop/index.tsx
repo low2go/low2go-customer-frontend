@@ -35,6 +35,7 @@ const ShopScreen = ({ route }) => {
         <Text style={styles.text}>Error: {error}</Text>
       </View>
     );
+    
   }
 
   // Function to sort the products based on the selected sort order
@@ -60,9 +61,7 @@ const ShopScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Shop</Text>
-
-      <View>
+      <View style={styles.facetContainer}>
         <SortButton onSortSelect={handleSelectOption} />
       </View>
 
@@ -91,6 +90,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
 
+  },
+  facetContainer: {
+    marginVertical: 10,
   },
   header: {
     color: Colors.text,

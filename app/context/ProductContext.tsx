@@ -38,7 +38,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://ec2-18-117-162-62.us-east-2.compute.amazonaws.com:8080/catalog/all'); 
+      const response = await fetch('http://ec2-13-58-26-172.us-east-2.compute.amazonaws.com:8080/catalog/all'); 
 
       const data = await response.json();
       setProducts(data);
