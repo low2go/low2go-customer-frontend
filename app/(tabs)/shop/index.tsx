@@ -35,6 +35,7 @@ const ShopScreen = ({ route }) => {
         <Text style={styles.text}>Error: {error}</Text>
       </View>
     );
+    
   }
 
   // Function to sort the products based on the selected sort order
