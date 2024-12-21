@@ -1,28 +1,24 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+
 import LoginScreen from './LoginScreen';
 import SignUpScreen from './SignUpScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
-
-const Stack = createBottomTabNavigator();
+const Stack = createStackNavigator()
 
 export default function AuthLayout() {
   return (
-    <Stack.Navigator>
-
+    <Stack.Navigator  >
       <Stack.Screen 
         name="Login" 
         component={LoginScreen} 
-        options={{ title: 'Login' }} 
+        options={{ title: 'Login' , headerShown: false}} 
       />
-
-        <Stack.Screen 
+      <Stack.Screen 
         name="Sign Up" 
         component={SignUpScreen} 
-        options={{ title: 'Sign Up' }} 
+        options={{ title: 'Sign Up', headerShown: false }} 
       />
-
     </Stack.Navigator>
   );
 }

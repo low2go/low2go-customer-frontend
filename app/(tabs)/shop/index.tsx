@@ -60,9 +60,7 @@ const ShopScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Shop</Text>
-
-      <View>
+      <View style={styles.facetContainer}>
         <SortButton onSortSelect={handleSelectOption} />
       </View>
 
@@ -91,6 +89,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
 
+  },
+  facetContainer: {
+    marginVertical: 10,
   },
   header: {
     color: Colors.text,
