@@ -18,7 +18,7 @@ export default function OrdersLayout() {
         name="Specific Search"
         component={SpecificSearch}
         options={({ navigation }) => ({
-          header: () => <Header navigation={navigation} />, // Custom header for Specific Search
+          header: () => <Header navigation={navigation} showBackButton={true}/>, // Custom header for Specific Search
         })}
       />
     </Stack.Navigator>
