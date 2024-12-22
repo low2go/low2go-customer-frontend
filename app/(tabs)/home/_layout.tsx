@@ -8,19 +8,23 @@ const Stack = createStackNavigator();
 
 export default function HomeLayout() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen 
-        name="Orders" 
-        component={Index} 
-        options={{ title: 'Home' }} 
-      />
-      <Stack.Screen
-        name="Specific Search"
-        component={SpecificSearch}
-        options={({ navigation }) => ({
-          header: () => <Header navigation={navigation} />, // Custom header for Specific Search
-        })}
-      />
-    </Stack.Navigator>
+<Stack.Navigator>
+  <Stack.Screen
+    name="Orders"
+    component={Index}
+    options={({ navigation }) => ({
+      header: () => <Header navigation={navigation} />, // Custom header for Orders
+    })}
+  />
+
+  <Stack.Screen
+    name="Specific Search"
+    component={SpecificSearch}
+    options={({ navigation }) => ({
+      header: () => <Header navigation={navigation} showBackButton={true} />, // Custom header for Specific Search
+    })}
+  />
+</Stack.Navigator>
+
   );
 }

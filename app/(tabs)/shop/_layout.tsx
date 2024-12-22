@@ -46,7 +46,7 @@ export default function ShopLayout() {
         name="Specific Search"
         component={SpecificSearch}
         options={({ navigation }) => ({
-          header: () => <Header navigation={navigation} />, // Custom Header for Specific Search
+          header: () => <Header navigation={navigation} showBackButton={true}/>, // Custom Header for Specific Search
         })}
       />
     </ShopStack.Navigator>
