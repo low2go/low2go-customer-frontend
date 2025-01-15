@@ -1,14 +1,20 @@
 import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { CartContext } from '@/app/context/CartContext';
 import CartItem from '@/app/components/Cart/CartItem';
 
 const CartScreen = () => {
-  const { cartItems, cartTotal } = useContext(CartContext);
+  const { cartItems, cartTotal, clearCart } = useContext(CartContext);
+  const navigation = useNavigation(); // Hook for navigation
 
   const renderItem = ({ item }: any) => (
     <CartItem productId={item.productId} quantity={item.quantity} />
   );
+
+  const handleNavigate = () => {
+    navigation.navigate('Checkout'); // Replace 'Checkout' with your target screen name
+  };
 
   return (
     <View style={styles.container}>
@@ -25,17 +31,26 @@ const CartScreen = () => {
 
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total: ${cartTotal.toFixed(2)}</Text>
+        {cartItems.length > 0 && (
+          <>
+            <TouchableOpacity style={styles.clearButton} onPress={clearCart}>
+              <Text style={styles.clearButtonText}>Clear Cart</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.navigateButton} onPress={handleNavigate}>
+              <Text style={styles.navigateButtonText}>Proceed to Checkout</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
-
-    
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-
+    flex: 1,
     backgroundColor: '#f9f9f9', // Light background color
+    padding: 16,
   },
   header: {
     fontSize: 24,
@@ -51,21 +66,47 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   totalContainer: {
-    marginTop: 20, // Space above the total
+    marginTop: 20,
     padding: 16,
-    backgroundColor: '#fff', // Background color for the total section
-    borderRadius: 8, // Rounded corners
-    shadowColor: '#000', // Add shadow for better visibility
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-    elevation: 2, // For Android shadow
+    elevation: 2,
   },
   totalText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333', // Dark text for total
+    color: '#333',
     textAlign: 'center',
+    marginBottom: 16,
+  },
+  clearButton: {
+    backgroundColor: '#f44336', // Red button
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  clearButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  navigateButton: {
+    backgroundColor: '#4CAF50', // Green button
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  navigateButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

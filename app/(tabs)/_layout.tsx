@@ -12,6 +12,7 @@ import Header from '../components/Header';
 import HomeLayout from './home/_layout';
 import ProfileLayout from './profile/_layout';
 import AuthLayout from './auth/_layout';
+import CheckoutScreen from './pages/Checkout';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -49,6 +50,7 @@ export default function AppNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Main" component={TabLayout} options={{ headerShown: false }} />
       <Stack.Screen name="Cart Page" component={Cart} />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} />
     </Stack.Navigator>
   );
 }
