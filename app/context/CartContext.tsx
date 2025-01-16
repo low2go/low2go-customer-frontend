@@ -137,8 +137,9 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   // Clear all items from the cart
   const clearCart = () => {
     setCartItems([]);
+    setCartCount(0); // Reset the item count
+    setCartTotal(0); // Reset the total price
     saveCartToStorage([]); // Clear the cart in AsyncStorage as well
-    calculateCartTotal([], []); // Reset the total
   };
 
   const calculateCartItemCount = (cartItems: CartItemObj[]): number => {

@@ -6,6 +6,7 @@ import * as SecureStore from 'expo-secure-store'; // Secure storage library
 interface AuthContextProps {
   user: User | null;
   loading: boolean; // Handle loading state
+  token: String;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState("");
 
   // Automatically log in the user if the token exists
   useEffect(() => {
@@ -27,6 +29,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // Attempt login using stored credentials
           const userCredential = await signInWithEmailAndPassword(auth, email, password);
           setUser(userCredential.user);
+          const token = await getIdToken(userCredential.user);
+          setToken(token);
+          console.log("token: " + token);
+          console.log("uid: " + userCredential.user.uid);
         } else {
           console.log('No stored credentials found');
         }
@@ -56,6 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       // Optionally store the Firebase token for future use
       const token = await getIdToken(userCredential.user);
+      setToken(token);
       console.log('Firebase token:', token);
 
       setUser(userCredential.user);
@@ -81,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
