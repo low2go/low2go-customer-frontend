@@ -49,8 +49,6 @@ export default function AppNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Main" component={TabLayout} options={{ headerShown: false }} />
-      <Stack.Screen name="Cart Page" component={Cart} />
-      <Stack.Screen name="Checkout" component={CheckoutScreen} />
     </Stack.Navigator>
   );
 }

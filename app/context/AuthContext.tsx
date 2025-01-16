@@ -31,6 +31,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUser(userCredential.user);
           const token = await getIdToken(userCredential.user);
           setToken(token);
+          console.log("token: " + token);
+          console.log("uid: " + userCredential.user.uid);
         } else {
           console.log('No stored credentials found');
         }

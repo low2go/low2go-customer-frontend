@@ -6,6 +6,7 @@ import Cart from '../pages/CartPage';
 import SpecificSearch from '../pages/SpecificSearch';
 import Header from '@/app/components/Header';
 import { ProductContext, ProductContextType } from '@/app/context/ProductContext';
+import CheckoutScreen from '../pages/Checkout';
 
 const ShopStack = createStackNavigator();
 
@@ -42,6 +43,9 @@ export default function ShopLayout() {
           // headerShown: false, // No header for this screen
         }}
       />
+
+      <ShopStack.Screen name="Checkout" component={CheckoutScreen} />
+
       <ShopStack.Screen
         name="Specific Search"
         component={SpecificSearch}

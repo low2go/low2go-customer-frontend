@@ -48,6 +48,12 @@ const CheckoutScreen = () => {
     console.log('Order placed!');
     clearCart();
 
+    //Resets the shop stack so next time you look at it, it's on the shop page. Also navigates user to the orders page
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Orders' }],
+    });
+
 
   };
 
